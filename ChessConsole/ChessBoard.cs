@@ -6,23 +6,6 @@ using System.Linq;
 
 namespace ChessConsole
 {
-    public static class INeedToShuffle
-    {
-        public static void Shuffle<T>(this IList<T> list)
-        {
-            Random random = new Random();
-            int n = list.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = random.Next(n + 1);
-                T value = list[k];
-                list[k] = list[n];
-                list[n] = value;
-            }
-        }
-    }
-
     /// <summary>
     /// Provides the data structure and algorithms for dealing with a chess board
     /// </summary>
@@ -260,7 +243,7 @@ namespace ChessConsole
             // white's pieces are randomly placed within these rules 
                 // bishops must be on opposite colored squares (one on even num, one on odd num)
                 // king must be placed between rooks
-            // black's pieces are placed equal and opposite to white's pieces ([x,y] do 7 - x to find placements)
+            // black's pieces are placed equal and opposite to white's pieces
 
             cells = new Cell[8, 8];
             for (int i = 0; i < 8; i++)
@@ -287,10 +270,6 @@ namespace ChessConsole
             } while ((whiteR1 == whiteR2) || (whiteR1 > whiteR2) || (whiteR1 > (whiteR2 - 1)) || (whiteR1 == (whiteR2 -1)));
             whiteK = random.Next(whiteR1 + 1, whiteR2 - 1);
 
-            Console.WriteLine("whiteR1: " + whiteR1);
-            Console.WriteLine("whiteR2: " + whiteR2);
-            Console.WriteLine("whiteK: " + whiteK);
-
             do
             {
                 whiteB1 = random.Next(0, 7); 
@@ -298,9 +277,6 @@ namespace ChessConsole
             } while ((whiteB1 == whiteB2) || (whiteB1 == whiteR1) || (whiteB1 == whiteR2) || (whiteB1 == whiteK) || 
                      (whiteB2 == whiteR1) || (whiteB2 == whiteR2) || (whiteB2 == whiteK) || 
                      (whiteB1 % 2 == 0 && whiteB2 % 2 == 0) || (whiteB1 % 2 == 1 && whiteB2 % 2 == 1));
-
-            Console.WriteLine("whiteB1: " + whiteB1);
-            Console.WriteLine("whiteB2: " + whiteB2);
 
             List<int> nums = new List<int>()
             {
@@ -319,13 +295,6 @@ namespace ChessConsole
                 if (!pickedNums.Contains(num)) chooseNums.Add(num); 
             }
 
-            Console.WriteLine("choosenums count: " + chooseNums.Count);
-
-            foreach (var num in chooseNums)
-            {
-                Console.WriteLine("Nums: " + num);
-            }
-
             do
             {
                 int whiteK1Index = random.Next(chooseNums.Count);
@@ -340,10 +309,6 @@ namespace ChessConsole
                      (whiteK1 == whiteR1) || (whiteK1 == whiteR2) || (whiteK1 == whiteK) || (whiteK1 == whiteB1) || (whiteK1 == whiteB2) ||
                      (whiteK2 == whiteR1) || (whiteK2 == whiteR2) || (whiteK2 == whiteK) || (whiteK2 == whiteB1) || (whiteK2 == whiteB2) ||
                      (whiteQ == whiteR1) || (whiteQ == whiteR2) || (whiteQ == whiteK) || (whiteQ == whiteB1) || (whiteQ == whiteB2));
-
-            Console.WriteLine("whiteK1: " + whiteK1);
-            Console.WriteLine("whiteK2: " + whiteK2);
-            Console.WriteLine("whiteQ: " + whiteQ);
 
             addPiece(cells[whiteR1, 0], new Rook(PlayerColor.White));
             addPiece(cells[whiteR2, 0], new Rook(PlayerColor.White));
