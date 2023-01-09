@@ -8,7 +8,6 @@ namespace Test
         [TestMethod]
         public void KingBetweenRooks()
         {
-
         }
     }
 }

@@ -302,11 +302,40 @@ namespace ChessConsole
             Console.WriteLine("whiteB1: " + whiteB1);
             Console.WriteLine("whiteB2: " + whiteB2);
 
+            List<int> nums = new List<int>()
+            {
+                0, 1, 2, 3, 4, 4, 5, 6, 7
+            };
+
+            List<int> pickedNums = new List<int>()
+            {
+                whiteR1, whiteR2, whiteK, whiteB1, whiteB2
+            };
+
+            List<int> chooseNums = new List<int>(); 
+
+            foreach (var num in nums)
+            {
+                if (!pickedNums.Contains(num)) chooseNums.Add(num); 
+            }
+
+            Console.WriteLine("choosenums count: " + chooseNums.Count);
+
+            foreach (var num in chooseNums)
+            {
+                Console.WriteLine("Nums: " + num);
+            }
+
             do
             {
-                whiteK1 = random.Next(0, 7); 
-                whiteK2 = random.Next(0, 7); 
-                whiteQ = random.Next(0, 7); 
+                int whiteK1Index = random.Next(chooseNums.Count);
+                int whiteK2Index = random.Next(chooseNums.Count);
+                int whiteQIndex = random.Next(chooseNums.Count);
+
+                whiteK1 = chooseNums[whiteK1Index]; 
+                whiteK2 = chooseNums[whiteK2Index]; 
+                whiteQ = chooseNums[whiteQIndex]; 
+
             } while ((whiteK1 == whiteK2) || (whiteK1 == whiteQ) || (whiteK2 == whiteQ) ||
                      (whiteK1 == whiteR1) || (whiteK1 == whiteR2) || (whiteK1 == whiteK) || (whiteK1 == whiteB1) || (whiteK1 == whiteB2) ||
                      (whiteK2 == whiteR1) || (whiteK2 == whiteR2) || (whiteK2 == whiteK) || (whiteK2 == whiteB1) || (whiteK2 == whiteB2) ||
