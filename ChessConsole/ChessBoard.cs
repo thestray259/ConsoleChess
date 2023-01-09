@@ -128,7 +128,14 @@ namespace ChessConsole
 
         public ChessBoard()
         {
-            Reset();
+            Console.WriteLine("1 - Normal Game");
+            Console.WriteLine("2 - Chess 960 Game");
+
+            string input = Console.ReadLine();
+
+            if (input == "1") Reset();
+            else if (input == "2") Chess960Setup();
+            //else Console.WriteLine("Choose an available option.");
         }
 
         #region Getters
@@ -308,6 +315,33 @@ namespace ChessConsole
             addPiece(cells[3, 0], new Queen(PlayerColor.White));
             addPiece(cells[5, 0], new Bishop(PlayerColor.White));
             addPiece(cells[6, 0], new Knight(PlayerColor.White));
+
+            addPiece(cells[0, 1], new Pawn(PlayerColor.White));
+            addPiece(cells[1, 1], new Pawn(PlayerColor.White));
+            addPiece(cells[2, 1], new Pawn(PlayerColor.White));
+            addPiece(cells[3, 1], new Pawn(PlayerColor.White));
+            addPiece(cells[4, 1], new Pawn(PlayerColor.White));
+            addPiece(cells[5, 1], new Pawn(PlayerColor.White));
+            addPiece(cells[6, 1], new Pawn(PlayerColor.White));
+            addPiece(cells[7, 1], new Pawn(PlayerColor.White));
+
+            addPiece(cells[0, 6], new Pawn(PlayerColor.Black));
+            addPiece(cells[1, 6], new Pawn(PlayerColor.Black));
+            addPiece(cells[2, 6], new Pawn(PlayerColor.Black));
+            addPiece(cells[3, 6], new Pawn(PlayerColor.Black));
+            addPiece(cells[4, 6], new Pawn(PlayerColor.Black));
+            addPiece(cells[5, 6], new Pawn(PlayerColor.Black));
+            addPiece(cells[6, 6], new Pawn(PlayerColor.Black));
+            addPiece(cells[7, 6], new Pawn(PlayerColor.Black));
+
+            addPiece(cells[7 - whiteR1, 7], new Rook(PlayerColor.Black));
+            addPiece(cells[7 - whiteK1, 7], new Knight(PlayerColor.Black));
+            addPiece(cells[7 - whiteB1, 7], new Bishop(PlayerColor.Black));
+            addPiece(cells[7 - whiteQ, 7], new Queen(PlayerColor.Black));
+            addPiece(cells[7 - whiteK, 7], (blackKing = new King(PlayerColor.Black)));
+            addPiece(cells[7 - whiteB2, 7], new Bishop(PlayerColor.Black));
+            addPiece(cells[7 - whiteK2, 7], new Knight(PlayerColor.Black));
+            addPiece(cells[7 - whiteR2, 7], new Rook(PlayerColor.Black));
 
             foreach (Piece piece in pieces)
             {
