@@ -6,6 +6,23 @@ using System.Linq;
 
 namespace ChessConsole
 {
+    public static class INeedToShuffle
+    {
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            Random random = new Random();
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
+    }
+
     /// <summary>
     /// Provides the data structure and algorithms for dealing with a chess board
     /// </summary>
@@ -261,60 +278,52 @@ namespace ChessConsole
 
             // pieces places here
             Random random = new Random();
+            int whiteR1 = -1, whiteR2 = -1, whiteB1 = -1, whiteB2 = -1, whiteK1 = -1, whiteK2 = -1, whiteQ = -1, whiteK = -1;
 
-            int whiteR1 = -1;
-            int whiteR2 = -1;
-            int whiteB1 = -1;
-            int whiteB2 = -1;
-            int whiteK1 = -1;
-            int whiteK2 = -1;
-            int whiteQ = -1;
-            int whiteK = -1;
+            do
+            {
+                whiteR1 = random.Next(0, 7);
+                whiteR2 = random.Next(0, 7);
+            } while ((whiteR1 == whiteR2) || (whiteR1 > whiteR2) || (whiteR1 > (whiteR2 - 1)) || (whiteR1 == (whiteR2 -1)));
+            whiteK = random.Next(whiteR1 + 1, whiteR2 - 1);
 
-            List<int> piecePlacements = new List<int>();
-            piecePlacements.Add(whiteR1); 
-            piecePlacements.Add(whiteR2); 
-            piecePlacements.Add(whiteB1); 
-            piecePlacements.Add(whiteB2); 
-            piecePlacements.Add(whiteK1); 
-            piecePlacements.Add(whiteK2); 
-            piecePlacements.Add(whiteQ); 
-            piecePlacements.Add(whiteK); 
+            Console.WriteLine("whiteR1: " + whiteR1);
+            Console.WriteLine("whiteR2: " + whiteR2);
+            Console.WriteLine("whiteK: " + whiteK);
 
-            whiteR1 = random.Next(0, 7);
+            do
+            {
+                whiteB1 = random.Next(0, 7); 
+                whiteB2 = random.Next(0, 7); 
+            } while ((whiteB1 == whiteB2) || (whiteB1 == whiteR1) || (whiteB1 == whiteR2) || (whiteB1 == whiteK) || 
+                     (whiteB2 == whiteR1) || (whiteB2 == whiteR2) || (whiteB2 == whiteK) || 
+                     (whiteB1 % 2 == 0 && whiteB2 % 2 == 0) || (whiteB1 % 2 == 1 && whiteB2 % 2 == 1));
+
+            Console.WriteLine("whiteB1: " + whiteB1);
+            Console.WriteLine("whiteB2: " + whiteB2);
+
+            do
+            {
+                whiteK1 = random.Next(0, 7); 
+                whiteK2 = random.Next(0, 7); 
+                whiteQ = random.Next(0, 7); 
+            } while ((whiteK1 == whiteK2) || (whiteK1 == whiteQ) || (whiteK2 == whiteQ) ||
+                     (whiteK1 == whiteR1) || (whiteK1 == whiteR2) || (whiteK1 == whiteK) || (whiteK1 == whiteB1) || (whiteK1 == whiteB2) ||
+                     (whiteK2 == whiteR1) || (whiteK2 == whiteR2) || (whiteK2 == whiteK) || (whiteK2 == whiteB1) || (whiteK2 == whiteB2) ||
+                     (whiteQ == whiteR1) || (whiteQ == whiteR2) || (whiteQ == whiteK) || (whiteQ == whiteB1) || (whiteQ == whiteB2));
+
+            Console.WriteLine("whiteK1: " + whiteK1);
+            Console.WriteLine("whiteK2: " + whiteK2);
+            Console.WriteLine("whiteQ: " + whiteQ);
+
             addPiece(cells[whiteR1, 0], new Rook(PlayerColor.White));
-
-            whiteR2 = random.Next(0, 7); 
-            if (whiteR2 == whiteR1 || !(whiteR2 > whiteR1 + 1))
-            {
-                while (whiteR2 == whiteR1 && !(whiteR2 > whiteR1 + 1))
-                {
-                    whiteR2 = random.Next(0, 7);
-                }
-            }
             addPiece(cells[whiteR2, 0], new Rook(PlayerColor.White));
-
-            whiteK = random.Next(whiteR1, whiteR2); 
             addPiece(cells[whiteK, 0], (whiteKing = new King(PlayerColor.White)));
-
-            whiteB1 = random.Next(0, 7);
-            foreach (var placement in piecePlacements)
-            {
-                // if placement is equal to any other placements, then assign new value
-                for (int i = 0; i < piecePlacements.Count; i++)
-                {
-                    if (placement == piecePlacements[i])
-                    {
-                        // placement needs to change 
-                    }
-                }
-            }
-
-            addPiece(cells[1, 0], new Knight(PlayerColor.White));
-            addPiece(cells[2, 0], new Bishop(PlayerColor.White));
-            addPiece(cells[3, 0], new Queen(PlayerColor.White));
-            addPiece(cells[5, 0], new Bishop(PlayerColor.White));
-            addPiece(cells[6, 0], new Knight(PlayerColor.White));
+            addPiece(cells[whiteK1, 0], new Knight(PlayerColor.White));
+            addPiece(cells[whiteB1, 0], new Bishop(PlayerColor.White));
+            addPiece(cells[whiteQ, 0], new Queen(PlayerColor.White));
+            addPiece(cells[whiteB2, 0], new Bishop(PlayerColor.White));
+            addPiece(cells[whiteK2, 0], new Knight(PlayerColor.White));
 
             addPiece(cells[0, 1], new Pawn(PlayerColor.White));
             addPiece(cells[1, 1], new Pawn(PlayerColor.White));
