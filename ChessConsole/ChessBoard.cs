@@ -228,6 +228,94 @@ namespace ChessConsole
         }
 
         /// <summary>
+        /// Resets the board state for Chess 960
+        /// </summary>
+        public void Chess960Setup()
+        {
+            // pawns stay in same place 
+            // white's pieces are randomly placed within these rules 
+                // bishops must be on opposite colored squares (one on even num, one on odd num)
+                // king must be placed between rooks
+            // black's pieces are placed equal and opposite to white's pieces ([x,y] do 7 - x to find placements)
+
+            cells = new Cell[8, 8];
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    cells[i, j] = new Cell(this, i, j);
+                }
+            }
+
+            pieces.Clear();
+
+            EnPassant = null;
+            EnPassantCapture = null;
+
+            // pieces places here
+            Random random = new Random();
+
+            int whiteR1 = -1;
+            int whiteR2 = -1;
+            int whiteB1 = -1;
+            int whiteB2 = -1;
+            int whiteK1 = -1;
+            int whiteK2 = -1;
+            int whiteQ = -1;
+            int whiteK = -1;
+
+            List<int> piecePlacements = new List<int>();
+            piecePlacements.Add(whiteR1); 
+            piecePlacements.Add(whiteR2); 
+            piecePlacements.Add(whiteB1); 
+            piecePlacements.Add(whiteB2); 
+            piecePlacements.Add(whiteK1); 
+            piecePlacements.Add(whiteK2); 
+            piecePlacements.Add(whiteQ); 
+            piecePlacements.Add(whiteK); 
+
+            whiteR1 = random.Next(0, 7);
+            addPiece(cells[whiteR1, 0], new Rook(PlayerColor.White));
+
+            whiteR2 = random.Next(0, 7); 
+            if (whiteR2 == whiteR1 || !(whiteR2 > whiteR1 + 1))
+            {
+                while (whiteR2 == whiteR1 && !(whiteR2 > whiteR1 + 1))
+                {
+                    whiteR2 = random.Next(0, 7);
+                }
+            }
+            addPiece(cells[whiteR2, 0], new Rook(PlayerColor.White));
+
+            whiteK = random.Next(whiteR1, whiteR2); 
+            addPiece(cells[whiteK, 0], (whiteKing = new King(PlayerColor.White)));
+
+            whiteB1 = random.Next(0, 7);
+            foreach (var placement in piecePlacements)
+            {
+                // if placement is equal to any other placements, then assign new value
+                for (int i = 0; i < piecePlacements.Count; i++)
+                {
+                    if (placement == piecePlacements[i])
+                    {
+                        // placement needs to change 
+                    }
+                }
+            }
+
+            addPiece(cells[1, 0], new Knight(PlayerColor.White));
+            addPiece(cells[2, 0], new Bishop(PlayerColor.White));
+            addPiece(cells[3, 0], new Queen(PlayerColor.White));
+            addPiece(cells[5, 0], new Bishop(PlayerColor.White));
+            addPiece(cells[6, 0], new Knight(PlayerColor.White));
+
+            foreach (Piece piece in pieces)
+            {
+                piece.Recalculate();
+            }
+        }
+
+        /// <summary>
         /// Called at the start of every turn. Recalcualtes legal moves.
         /// </summary>
         /// <param name="currentPlayer">The player whose turn is to move</param>
