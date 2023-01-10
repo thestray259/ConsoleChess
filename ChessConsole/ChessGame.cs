@@ -51,6 +51,11 @@ namespace ChessConsole
         /// </summary>
         private ChessBoard board;
 
+        public ChessBoard GetChessBoard()
+        {
+            return board;
+        }
+
         /// <summary>
         /// Currently holded piece's parent cell
         /// </summary>
@@ -60,6 +65,14 @@ namespace ChessConsole
         /// Where to move
         /// </summary>
         private ChessBoard.Cell moveTo = null;
+
+        public ChessGame(bool is960Game)
+        {
+            Running = true;
+            board = new ChessBoard(is960Game);
+            currentPlayer = PlayerColor.White;
+            turnStart();
+        }
 
         public ChessGame()
         {

@@ -94,6 +94,11 @@ namespace ChessConsole
         /// </summary>
         private Cell[,] cells;
 
+        public Cell[,] GetCells()
+        {
+            return cells; 
+        }
+
         /// <summary>
         /// The cell to hit for en passant
         /// </summary>
@@ -125,6 +130,12 @@ namespace ChessConsole
         /// Caches the <see cref = "IsInCheck" /> method's result
         /// </summary>
         private bool inCheck;
+
+        public ChessBoard(bool is960Game)
+        {
+            if (!is960Game) Reset();
+            else if (is960Game) Chess960Setup();
+        }
 
         public ChessBoard()
         {
